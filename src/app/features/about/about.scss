@@ -1,0 +1,257 @@
+.about {
+  position: relative;
+  padding: clamp(4rem, 10vw, 8rem) 2rem;
+  background: linear-gradient(180deg, #020408 0%, #060c14 50%, #020408 100%);
+
+  &::before {
+    content: 'ᛟ';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40rem;
+    color: rgba(125, 211, 252, 0.012);
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+.about__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.about__codex {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* ── Lore Card ── */
+.about__lore-card {
+  position: relative;
+  background: rgba(10, 22, 40, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(125, 211, 252, 0.15);
+  padding: 2rem;
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+/* Nordic corners son <app-nordic-corner> */
+
+.about__lore-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.about__lore-rune {
+  font-size: 3rem;
+  color: #7dd3fc;
+  line-height: 1;
+  animation: runeGlow 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.about__lore-mark {
+  width: 72px;
+  height: 72px;
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 12px rgba(125, 211, 252, 0.4));
+  animation: loreMarkPulse 4s ease-in-out infinite;
+}
+
+@keyframes loreMarkPulse {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(125, 211, 252, 0.35)); }
+  50%      { filter: drop-shadow(0 0 18px rgba(125, 211, 252, 0.7)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about__lore-mark { animation: none; }
+}
+
+.about__lore-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.about__lore-class {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  opacity: 0.7;
+}
+
+.about__lore-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+
+  p {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    color: #94a3b8;
+    line-height: 1.7;
+
+    strong { color: #cbd5e1; font-weight: 600; }
+    em     { color: #7dd3fc; font-style: normal; }
+  }
+}
+
+/* Attributes */
+.about__attributes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.about__attr {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(125, 211, 252, 0.04);
+  border: 1px solid rgba(125, 211, 252, 0.08);
+  transition: border-color 250ms, background 250ms;
+
+  &:hover {
+    border-color: rgba(125, 211, 252, 0.2);
+    background: rgba(125, 211, 252, 0.07);
+  }
+}
+
+.about__attr-icon { font-size: 1rem; flex-shrink: 0; }
+
+.about__attr-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.about__attr-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.about__attr-value {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Timeline ── */
+.about__timeline-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #7dd3fc;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.about__timeline-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.about__timeline-entry {
+  display: flex;
+  gap: 1rem;
+}
+
+.about__timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.about__timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(125, 211, 252, 0.4);
+  background: #060c14;
+  flex-shrink: 0;
+  transition: all 300ms;
+
+  &--work { border-color: #7dd3fc; background: rgba(125, 211, 252, 0.15); }
+  &--edu  { border-color: #fbbf24; background: rgba(251, 191, 36, 0.15); }
+}
+
+.about__timeline-entry:hover .about__timeline-dot {
+  box-shadow: 0 0 12px rgba(125, 211, 252, 0.5);
+  transform: scale(1.2);
+}
+
+.about__timeline-line {
+  width: 1px;
+  flex: 1;
+  background: linear-gradient(to bottom, rgba(125, 211, 252, 0.2), transparent);
+  margin: 4px 0;
+  min-height: 1.5rem;
+}
+
+.about__timeline-content {
+  padding-bottom: 1.5rem;
+  flex: 1;
+}
+
+.about__timeline-year {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #7dd3fc;
+  opacity: 0.8;
+}
+
+.about__timeline-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin: 0.1rem 0;
+}
+
+.about__timeline-institution {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fbbf24;
+  opacity: 0.7;
+  margin-bottom: 0.35rem;
+}
+
+.about__timeline-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about__codex { grid-template-columns: 1fr; }
+  .about__attributes { grid-template-columns: 1fr; }
+}

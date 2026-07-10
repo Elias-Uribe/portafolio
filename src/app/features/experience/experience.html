@@ -1,0 +1,80 @@
+<section id="experience" class="experience">
+  <div class="experience__inner">
+
+    <app-section-header
+      label="ᚨ · Códice del Gremio"
+      title="Experiencia en Campo"
+      subtitle="Las batallas libradas que forjaron al guerrero"
+    />
+
+    <div class="experience__list">
+      @for (exp of experiences; track exp.id) {
+        <article class="exp-card">
+          <div class="exp-card__accent" aria-hidden="true">
+            <div class="exp-card__accent-line"></div>
+            <div class="exp-card__accent-rune">ᚨ</div>
+          </div>
+
+          <div class="exp-card__body">
+            <div class="exp-card__header">
+              <div class="exp-card__title-group">
+                <h3 class="exp-card__role">{{ exp.role }}</h3>
+                <div class="exp-card__company-row">
+                  <span class="exp-card__company">{{ exp.company }}</span>
+                  @if (exp.current) {
+                    <span class="exp-card__badge">Actual</span>
+                  }
+                </div>
+              </div>
+              <div class="exp-card__meta">
+                <span class="exp-card__period">{{ exp.period }}</span>
+                <span class="exp-card__location">
+                  <span aria-hidden="true">📍</span> {{ exp.location }}
+                </span>
+              </div>
+            </div>
+
+            <p class="exp-card__desc">{{ exp.description }}</p>
+
+            <ul class="exp-card__achievements">
+              @for (achievement of exp.achievements; track achievement) {
+                <li class="exp-card__achievement">
+                  <span class="exp-card__achievement-rune" aria-hidden="true">◆</span>
+                  {{ achievement }}
+                </li>
+              }
+            </ul>
+
+            <div class="exp-card__tech">
+              @for (tech of exp.tech; track tech) {
+                <span class="exp-card__tech-tag">{{ tech }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="exp-card__corner" aria-hidden="true"></div>
+        </article>
+      }
+    </div>
+
+    <div class="experience__education">
+      <div class="experience__edu-card">
+        <span class="experience__edu-icon" aria-hidden="true">🎓</span>
+        @for (edu of education; track edu.id; let first = $first; let last = $last) {
+          <div class="experience__edu-slot" [class.experience__edu-slot--secondary]="!first">
+            <h3 class="experience__edu-title">
+              {{ edu.title }}
+              @if (edu.current) { <span class="experience__edu-badge">En curso</span> }
+            </h3>
+            <p class="experience__edu-inst">{{ edu.institution }}</p>
+            <p class="experience__edu-period">{{ edu.period }}</p>
+          </div>
+          @if (!last) {
+            <div class="experience__edu-divider" aria-hidden="true"></div>
+          }
+        }
+      </div>
+    </div>
+
+  </div>
+</section>

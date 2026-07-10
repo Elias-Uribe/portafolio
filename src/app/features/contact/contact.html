@@ -1,0 +1,151 @@
+<section id="contact" class="contact">
+  <div class="contact__inner">
+
+    <app-section-header
+      label="ᚲ · Mensajería del Reino"
+      title="Enviar Pergamino"
+      subtitle="¿Tienes una misión en mente? Hablemos."
+      dividerVariant="gold"
+    />
+
+    <div class="contact__layout">
+
+      <div class="contact__info">
+        <div class="contact__info-card">
+          <div class="contact__info-rune" aria-hidden="true">ᚲ</div>
+          <h3 class="contact__info-title">Disponible para proyectos</h3>
+          <p class="contact__info-desc">
+            Actualmente abierto a oportunidades freelance y posiciones
+            full-stack en equipos que valoren la calidad y la innovación.
+            No dudes en iniciar la conversación.
+          </p>
+
+          <app-rune-divider symbol="·" />
+
+          <ul class="contact__links">
+            @for (link of links; track link.label) {
+              <li>
+                <a
+                  [href]="link.href"
+                  class="contact__link"
+                  [attr.target]="link.external ? '_blank' : null"
+                  [attr.rel]="link.external ? 'noopener noreferrer' : null"
+                >
+                  <span class="contact__link-icon" aria-hidden="true">{{ link.icon }}</span>
+                  <div class="contact__link-body">
+                    <span class="contact__link-label">{{ link.label }}</span>
+                    <span class="contact__link-value">{{ link.value }}</span>
+                  </div>
+                  <span class="contact__link-arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="contact__form-wrap">
+        @if (!sent()) {
+          <form class="contact__form" (ngSubmit)="submit()" #form="ngForm" novalidate>
+            <div class="contact__form-header">
+              <span class="contact__form-rune" aria-hidden="true">📜</span>
+              <h3 class="contact__form-title">Redactar Mensaje</h3>
+            </div>
+
+            <!-- Honeypot: invisible al usuario, atrae bots -->
+            <label class="contact__honeypot" aria-hidden="true">
+              Dejar en blanco
+              <input
+                type="text"
+                name="botcheck"
+                tabindex="-1"
+                autocomplete="off"
+                [ngModel]="botcheck()"
+                (ngModelChange)="botcheck.set($event)"
+              />
+            </label>
+
+            <div class="contact__field">
+              <label class="contact__label" for="contact-name">Nombre del Mensajero</label>
+              <input
+                id="contact-name"
+                class="contact__input"
+                type="text"
+                placeholder="Tu nombre completo"
+                [ngModel]="name()"
+                (ngModelChange)="name.set($event)"
+                name="name"
+                required
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="contact__field">
+              <label class="contact__label" for="contact-email">Paloma Mensajera (Email)</label>
+              <input
+                id="contact-email"
+                class="contact__input"
+                type="email"
+                placeholder="tu@email.com"
+                [ngModel]="email()"
+                (ngModelChange)="email.set($event)"
+                name="email"
+                required
+                autocomplete="email"
+              />
+            </div>
+
+            <div class="contact__field">
+              <label class="contact__label" for="contact-message">El Pergamino</label>
+              <textarea
+                id="contact-message"
+                class="contact__input contact__textarea"
+                placeholder="Describe tu misión, proyecto o propuesta..."
+                [ngModel]="message()"
+                (ngModelChange)="message.set($event)"
+                name="message"
+                required
+                rows="5"
+              ></textarea>
+            </div>
+
+            @if (error(); as errMsg) {
+              <div class="contact__error" role="alert" aria-live="assertive">
+                <span aria-hidden="true">⚠</span> {{ errMsg }}
+              </div>
+            }
+
+            @if (sending()) {
+              <div class="contact__loading" role="status" aria-live="polite">
+                <app-loading-dragon label="Enviando pergamino..." />
+                <span class="contact__loading-text">Invocando al mensajero...</span>
+              </div>
+            } @else {
+              <app-glow-button
+                type="submit"
+                variant="gold"
+                icon="⚔️"
+                (clicked)="submit()"
+              >
+                Enviar Pergamino
+              </app-glow-button>
+            }
+          </form>
+        } @else {
+          <div class="contact__success">
+            <div class="contact__success-rune" aria-hidden="true">ᚱ</div>
+            <h3 class="contact__success-title">¡Pergamino Enviado!</h3>
+            <p class="contact__success-desc">
+              Tu mensaje ha llegado. Responderé a la brevedad, aventurero.
+            </p>
+            <button type="button" class="contact__success-reset" (click)="resetForm()">
+              Enviar otro mensaje
+            </button>
+          </div>
+        }
+      </div>
+
+    </div>
+
+  </div>
+</section>

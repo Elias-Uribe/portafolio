@@ -1,0 +1,290 @@
+.skills {
+  position: relative;
+  padding: clamp(4rem, 10vw, 8rem) 2rem;
+  background: linear-gradient(180deg, #020408 0%, #0a1628 50%, #020408 100%);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 50%, rgba(14, 165, 233, 0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 30% at 80% 50%, rgba(251, 191, 36, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.skills__inner {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Tabs ── */
+.skills__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.skills__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.825rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #475569;
+  background: rgba(125, 211, 252, 0.04);
+  border: 1px solid rgba(125, 211, 252, 0.1);
+  cursor: pointer;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+
+  &:hover {
+    color: #94a3b8;
+    border-color: rgba(125, 211, 252, 0.2);
+    background: rgba(125, 211, 252, 0.07);
+  }
+
+  &--active {
+    color: #7dd3fc;
+    border-color: rgba(125, 211, 252, 0.5);
+    background: rgba(125, 211, 252, 0.1);
+    box-shadow: 0 0 16px rgba(125, 211, 252, 0.15);
+  }
+}
+
+.skills__tab-rune {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  transition: opacity 250ms;
+}
+.skills__tab--active .skills__tab-rune,
+.skills__tab:hover .skills__tab-rune { opacity: 1; }
+
+/* ── Constellation ── */
+.constellation {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  aspect-ratio: 940 / 620;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(251, 191, 36, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(10, 22, 40, 0.55) 0%, transparent 80%);
+  border: 1px solid rgba(125, 211, 252, 0.1);
+}
+
+.constellation__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Estrellas de fondo con twinkle */
+.constellation__bg-stars circle {
+  animation: bgTwinkle 6s ease-in-out infinite;
+}
+.constellation__bg-stars circle:nth-child(3n)  { animation-delay: -1s; }
+.constellation__bg-stars circle:nth-child(3n+1){ animation-delay: -2.5s; }
+.constellation__bg-stars circle:nth-child(3n+2){ animation-delay: -4s; }
+
+@keyframes bgTwinkle {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 0.5; }
+}
+
+/* Líneas de cluster con draw-in animation */
+.cluster {
+  transition: opacity 400ms ease;
+}
+.cluster--dim { opacity: 0.15; }
+
+.cluster__line {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.constellation--drawn .cluster__line {
+  stroke-dashoffset: 0;
+}
+.constellation--drawn .cluster:nth-child(2) .cluster__line { transition-delay: 0.15s; }
+.constellation--drawn .cluster:nth-child(3) .cluster__line { transition-delay: 0.3s; }
+.constellation--drawn .cluster:nth-child(4) .cluster__line { transition-delay: 0.45s; }
+.constellation--drawn .cluster:nth-child(5) .cluster__line { transition-delay: 0.6s; }
+
+/* Núcleo del cluster */
+.cluster__core {
+  animation: coreThrob 3.5s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes coreThrob {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+
+.cluster__core-rune {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  fill: #020408;
+  font-weight: 700;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cluster__label {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  fill: #fbbf24;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Star nodes */
+.star {
+  cursor: pointer;
+  transform-origin: center;
+  transition: transform 250ms;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus,
+  &:focus-visible,
+  &:active { outline: none; }
+}
+
+.star__halo {
+  opacity: 0;
+  transition: opacity 300ms;
+  pointer-events: none;
+}
+.star:hover .star__halo,
+.star:focus-visible .star__halo,
+.star--hovered .star__halo {
+  opacity: 0.7;
+}
+
+/* Estampa de runa gigante al hover (como aprender una palabra de poder) */
+.star__rune-stamp {
+  font-family: 'Cinzel', serif;
+  font-size: 42px;
+  font-weight: 900;
+  fill: rgba(251, 191, 36, 0.55);
+  filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.4));
+  opacity: 0;
+  transform: scale(0);
+  transform-box: fill-box;
+  transform-origin: center;
+  pointer-events: none;
+  transition:
+    opacity 400ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.star:hover .star__rune-stamp,
+.star:focus-visible .star__rune-stamp,
+.star--hovered .star__rune-stamp {
+  opacity: 1;
+  transform: scale(1);
+  animation: runeStampPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes runeStampPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.4));
+    fill: rgba(251, 191, 36, 0.55);
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(251, 191, 36, 0.75));
+    fill: rgba(254, 243, 199, 0.75);
+  }
+}
+
+.star__core {
+  transition: r 300ms, fill 300ms;
+  animation: starTwinkle 4s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.3s);
+}
+.star:hover .star__core,
+.star--hovered .star__core {
+  fill: #fef3c7;
+  r: 6;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+
+.star__name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  fill: #cbd5e1;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  opacity: 0.75;
+  transition: opacity 300ms, fill 300ms;
+  pointer-events: none;
+  user-select: none;
+}
+.star:hover .star__name,
+.star--hovered .star__name {
+  opacity: 1;
+  fill: #fef3c7;
+}
+
+/* Tooltip flotante en esquina */
+.constellation__tooltip {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  padding: 0.6rem 1rem;
+  background: rgba(6, 12, 20, 0.9);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  backdrop-filter: blur(8px);
+  font-family: 'Rajdhani', sans-serif;
+  animation: fadeIn 180ms ease-out;
+  z-index: 3;
+
+  &-name {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fef3c7;
+    letter-spacing: 0.08em;
+  }
+  &-years {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-top: 0.15rem;
+  }
+}
+
+/* Mobile: constelación colapsa a scroll horizontal si es muy chica */
+@media (max-width: 640px) {
+  .constellation { min-height: 400px; }
+  .star__name { font-size: 9px; }
+  .cluster__label { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cluster__line { stroke-dashoffset: 0; transition: none; }
+  .cluster__core, .star__core, .constellation__bg-stars circle { animation: none; }
+}

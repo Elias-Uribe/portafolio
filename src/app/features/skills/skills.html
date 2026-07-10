@@ -1,0 +1,182 @@
+<section id="skills" class="skills">
+  <div class="skills__inner">
+
+    <app-section-header
+      label="ᚱ · Árbol de Habilidades"
+      title="Arsenal del Guerrero"
+      subtitle="Constelaciones de dominio, forjadas en el yunque del código"
+    />
+
+    <div class="skills__tabs" role="tablist" aria-label="Filtrar constelaciones por categoría">
+      @for (cat of categories; track cat.id) {
+        <button
+          type="button"
+          class="skills__tab"
+          [class.skills__tab--active]="activeCategory() === cat.id"
+          role="tab"
+          [attr.aria-selected]="activeCategory() === cat.id"
+          [attr.aria-controls]="'constellation-panel'"
+          data-fx="burst"
+          (click)="setCategory(cat.id)"
+        >
+          <span class="skills__tab-rune" aria-hidden="true">{{ cat.rune }}</span>
+          {{ cat.label }}
+        </button>
+      }
+    </div>
+
+    <div
+      id="constellation-panel"
+      class="constellation"
+      #constellationRef
+      [class.constellation--drawn]="drawn()"
+      role="tabpanel"
+      [attr.aria-label]="'Constelación de habilidades — ' + activeCategory()"
+    >
+      <svg
+        class="constellation__svg"
+        viewBox="0 0 940 620"
+        preserveAspectRatio="xMidYMid meet"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#e0f2fe" stop-opacity="1"/>
+            <stop offset="35%" stop-color="#7dd3fc" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="starGlowGold" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fef3c7" stop-opacity="1"/>
+            <stop offset="35%" stop-color="#fbbf24" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Estrellas de fondo decorativas -->
+        <g class="constellation__bg-stars" aria-hidden="true">
+          @for (i of [12,45,78,113,152,194,220,258,301,340,388,430,471,510,548,595,633,678,720,765,810,850,890]; track i) {
+            <circle
+              [attr.cx]="i * 1.1 % 940"
+              [attr.cy]="(i * 47) % 620"
+              [attr.r]="0.6 + (i % 3) * 0.3"
+              fill="#fff"
+              [attr.opacity]="0.15 + ((i * 7) % 30) / 100"
+            />
+          }
+        </g>
+
+        <!-- Clusters -->
+        @for (cluster of clusters(); track cluster.id) {
+          <g
+            class="cluster"
+            [class.cluster--dim]="!isClusterActive(cluster.id)"
+            [attr.data-cluster]="cluster.id"
+          >
+            <!-- Líneas del centro a cada estrella -->
+            @for (star of cluster.stars; track star.skill.name) {
+              <line
+                class="cluster__line"
+                [attr.x1]="cluster.originX"
+                [attr.y1]="cluster.originY"
+                [attr.x2]="star.cx"
+                [attr.y2]="star.cy"
+                stroke="rgba(125, 211, 252, 0.35)"
+                stroke-width="1"
+              />
+            }
+
+            <!-- Núcleo de la constelación (rune + label) -->
+            <circle
+              class="cluster__core"
+              [attr.cx]="cluster.originX"
+              [attr.cy]="cluster.originY"
+              r="10"
+              fill="url(#starGlowGold)"
+              filter="url(#softGlow)"
+            />
+            <text
+              class="cluster__core-rune"
+              [attr.x]="cluster.originX"
+              [attr.y]="cluster.originY + 4"
+              text-anchor="middle"
+              aria-hidden="true"
+            >{{ cluster.rune }}</text>
+            <text
+              class="cluster__label"
+              [attr.x]="cluster.originX"
+              [attr.y]="cluster.originY + cluster.labelDy"
+              text-anchor="middle"
+            >{{ cluster.label }}</text>
+
+            <!-- Estrellas de skills -->
+            @for (star of cluster.stars; track star.skill.name) {
+              <g
+                class="star"
+                [class.star--hovered]="isSkillHovered(star.skill)"
+                (mouseenter)="onStarEnter(star.skill)"
+                (mouseleave)="onStarLeave()"
+                (focus)="onStarEnter(star.skill)"
+                (blur)="onStarLeave()"
+                tabindex="0"
+                [attr.aria-label]="star.skill.name + (star.skill.yearsUsed ? ' — ' + yearsLabel(star.skill.yearsUsed) : '')"
+              >
+                <!-- Estampa de runa al hover: gigante translúcida atrás -->
+                <text
+                  class="star__rune-stamp"
+                  [attr.x]="star.cx"
+                  [attr.y]="star.cy + 12"
+                  text-anchor="middle"
+                  aria-hidden="true"
+                >{{ cluster.rune }}</text>
+
+                <!-- Halo -->
+                <circle
+                  class="star__halo"
+                  [attr.cx]="star.cx"
+                  [attr.cy]="star.cy"
+                  [attr.r]="star.size * 3"
+                  fill="url(#starGlow)"
+                />
+                <!-- Núcleo -->
+                <circle
+                  class="star__core"
+                  [attr.cx]="star.cx"
+                  [attr.cy]="star.cy"
+                  [attr.r]="star.size"
+                  fill="#e0f2fe"
+                  filter="url(#softGlow)"
+                />
+
+                <!-- Nombre visible siempre debajo -->
+                <text
+                  class="star__name"
+                  [attr.x]="star.cx"
+                  [attr.y]="star.cy + star.size + 14"
+                  text-anchor="middle"
+                >{{ star.skill.name }}</text>
+              </g>
+            }
+          </g>
+        }
+      </svg>
+
+      <!-- Tooltip flotante -->
+      @if (hoveredSkill(); as sk) {
+        <div class="constellation__tooltip" role="status" aria-live="polite">
+          <span class="constellation__tooltip-name">{{ sk.name }}</span>
+          @if (sk.yearsUsed) {
+            <span class="constellation__tooltip-years">{{ yearsLabel(sk.yearsUsed) }}</span>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+</section>

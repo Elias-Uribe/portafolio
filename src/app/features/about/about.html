@@ -1,0 +1,104 @@
+<section id="about" class="about">
+  <div class="about__inner">
+    <app-section-header label="ᚢ · Pergamino del Aventurero" title="Sobre Mí" subtitle="El lore detrás del código" />
+
+    <!-- Codex layout -->
+    <div class="about__codex">
+      <!-- Left: Lore text -->
+      <div class="about__lore">
+        <div class="about__lore-card">
+          <app-nordic-corner position="tl" />
+          <app-nordic-corner position="tr" />
+          <app-nordic-corner position="bl" />
+          <app-nordic-corner position="br" />
+
+          <div class="about__lore-header">
+            <img
+              class="about__lore-mark"
+              src="/images/logo-192.png"
+              srcset="/images/logo-96.png 1x, /images/logo-192.png 2x"
+              width="72"
+              height="72"
+              alt=""
+              aria-hidden="true"
+            />
+            <div>
+              <h3 class="about__lore-name">{{ config.identity.fullName }}</h3>
+              <p class="about__lore-class">Clase: Full-Stack Developer · Angular & Spring Boot</p>
+            </div>
+          </div>
+
+          <app-rune-divider symbol="ᚨ" />
+
+          <div class="about__lore-body">
+            <p class="drop-cap">
+              Originario de <strong>Cipolletti, Río Negro, Argentina</strong>, forjé mis primeras líneas de código en el
+              <strong>CET N°30</strong>, donde completé el Bachillerato Técnico en Programación. Desde entonces, no he
+              dejado de construir.
+            </p>
+            <p>
+              Hoy me especializo en el ecosistema <strong>Angular + Spring Boot</strong>, creando aplicaciones web
+              robustas, escalables y visualmente impecables. Trabajo en <strong>Edit Software</strong>, donde contribuyo
+              en proyectos de alto impacto para clientes corporativos y sistemas de alcance nacional.
+            </p>
+            <p>
+              En paralelo, avanzo en mi formación universitaria en
+              <strong>Ingeniería en Informática</strong> en la UNNOBA, profundizando en algoritmia, arquitectura y
+              sistemas distribuidos.
+            </p>
+            <p>
+              Mi filosofía: el código de calidad es la diferencia entre un producto que funciona y uno que
+              <em>trasciende</em>.
+            </p>
+          </div>
+
+          <!-- Standing Stone widget -->
+          <app-standing-stone />
+
+          <!-- Attributes RPG style -->
+          <app-rune-divider symbol="ᚱ" />
+
+          <div class="about__attributes">
+            @for (attr of attributes; track attr.name) {
+              <div class="about__attr">
+                <span class="about__attr-icon">{{ attr.icon }}</span>
+                <div class="about__attr-info">
+                  <span class="about__attr-name">{{ attr.name }}</span>
+                  <span class="about__attr-value">{{ attr.value }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Timeline -->
+      <div class="about__timeline">
+        <h3 class="about__timeline-title"><span aria-hidden="true">📜</span> Crónica del Aventurero</h3>
+
+        <div class="about__timeline-list">
+          @for (entry of timeline; track entry.year + entry.title; let last = $last) {
+            <div class="about__timeline-entry" [class.about__timeline-entry--last]="last">
+              <div class="about__timeline-marker">
+                <div
+                  class="about__timeline-dot"
+                  [class.about__timeline-dot--work]="entry.type === 'work'"
+                  [class.about__timeline-dot--edu]="entry.type === 'education'"
+                ></div>
+                @if (!last) {
+                  <div class="about__timeline-line"></div>
+                }
+              </div>
+              <div class="about__timeline-content">
+                <span class="about__timeline-year">{{ entry.year }}</span>
+                <h4 class="about__timeline-heading">{{ entry.title }}</h4>
+                <p class="about__timeline-institution">{{ entry.institution }}</p>
+                <p class="about__timeline-desc">{{ entry.description }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

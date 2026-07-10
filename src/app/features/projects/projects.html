@@ -1,0 +1,179 @@
+<section id="projects" class="projects">
+  <div class="projects__inner">
+
+    <app-section-header
+      label="ᚦ · Libro de Misiones"
+      title="Quests Completadas"
+      subtitle="Cada proyecto es una batalla ganada. Cada línea de código, una cicatriz honrosa."
+      dividerVariant="gold"
+    />
+
+    <div class="projects__grid">
+      @for (project of projects; track project.id; let i = $index) {
+        <article
+          class="quest-card"
+          [class.quest-card--featured]="i === 0"
+          (click)="openModal(project, $event)"
+          (keydown.enter)="openModal(project, $event)"
+          tabindex="0"
+          role="button"
+          data-fx="burst"
+          [attr.aria-label]="'Ver detalles de ' + project.title"
+        >
+          <!-- Textura de pergamino envejecido -->
+          <div class="quest-card__parchment" aria-hidden="true"></div>
+
+          <!-- Banner diagonal MAIN / SIDE QUEST -->
+          <div
+            class="quest-card__banner"
+            [class.quest-card__banner--main]="i === 0"
+            [class.quest-card__banner--side]="i !== 0"
+            aria-hidden="true"
+          >
+            <span>{{ i === 0 ? 'Main Quest' : 'Side Quest' }}</span>
+          </div>
+
+          <div class="quest-card__status">
+            <span class="quest-card__status-dot"
+              [class.quest-card__status-dot--complete]="project.status === 'completed'"
+            ></span>
+            <span class="quest-card__status-label">
+              {{ getStatusRune(project.status) }} {{ getStatusLabel(project.status) }}
+            </span>
+          </div>
+
+          <div class="quest-card__header">
+            <div class="quest-card__index" aria-hidden="true">{{ ('0' + (i + 1)).slice(-2) }}</div>
+            <div>
+              <h3 class="quest-card__title">{{ project.title }}</h3>
+              <p class="quest-card__subtitle">{{ project.subtitle }}</p>
+            </div>
+          </div>
+
+          <p class="quest-card__desc">{{ project.description }}</p>
+
+          <div class="quest-card__tech">
+            @for (tech of project.tech.slice(0, 3); track tech) {
+              <span class="quest-card__tag">{{ tech }}</span>
+            }
+            @if (project.tech.length > 3) {
+              <span class="quest-card__tag quest-card__tag--more">
+                +{{ project.tech.length - 3 }}
+              </span>
+            }
+          </div>
+
+          <div class="quest-card__footer">
+            <span class="quest-card__role">{{ project.role }}</span>
+            <span class="quest-card__year">{{ project.year }}</span>
+          </div>
+
+          <div class="quest-card__overlay" aria-hidden="true">
+            <span>Ver Detalles ᚦ</span>
+          </div>
+
+          <!-- Esquinas nórdicas -->
+          <app-nordic-corner position="tl" variant="gold" />
+          <app-nordic-corner position="br" variant="gold" />
+
+          <!-- Chispas de esquina al hover -->
+          <span class="quest-card__spark quest-card__spark--tl" aria-hidden="true"></span>
+          <span class="quest-card__spark quest-card__spark--br" aria-hidden="true"></span>
+        </article>
+      }
+    </div>
+
+  </div>
+
+  @if (activeProject(); as project) {
+    <div
+      class="modal-overlay"
+      (click)="closeModal()"
+      role="presentation"
+    >
+      <div
+        class="modal modal--unroll"
+        #modalRef
+        (click)="$event.stopPropagation()"
+        role="dialog"
+        aria-modal="true"
+        tabindex="-1"
+        [attr.aria-label]="project.title"
+      >
+        <!-- Ornamentación superior del pergamino -->
+        <div class="modal__top-ornament" aria-hidden="true">
+          <span class="modal__top-ornament-glyph">◆</span>
+        </div>
+        <div class="modal__parchment" aria-hidden="true"></div>
+
+        <button type="button" class="modal__close" (click)="closeModal()" aria-label="Cerrar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="4" x2="20" y2="20"/>
+            <line x1="20" y1="4" x2="4" y2="20"/>
+          </svg>
+        </button>
+
+        <div class="modal__header">
+          <span class="modal__rune" aria-hidden="true">ᚦ</span>
+          <div>
+            <h2 class="modal__title">{{ project.title }}</h2>
+            <p class="modal__subtitle">{{ project.subtitle }}</p>
+          </div>
+        </div>
+
+        <div class="modal__body">
+          <p class="modal__desc">{{ project.description }}</p>
+
+          <div class="modal__meta">
+            <div class="modal__meta-item">
+              <span class="modal__meta-label">Rol</span>
+              <span class="modal__meta-value">{{ project.role }}</span>
+            </div>
+            <div class="modal__meta-item">
+              <span class="modal__meta-label">Año</span>
+              <span class="modal__meta-value">{{ project.year }}</span>
+            </div>
+            <div class="modal__meta-item">
+              <span class="modal__meta-label">Estado</span>
+              <span class="modal__meta-value">{{ getStatusLabel(project.status) }}</span>
+            </div>
+          </div>
+
+          <div class="modal__tech">
+            <h4 class="modal__tech-title">Stack Tecnológico</h4>
+            <div class="modal__tech-list">
+              @for (tech of project.tech; track tech) {
+                <span class="modal__tech-tag">{{ tech }}</span>
+              }
+            </div>
+          </div>
+
+          @if (project.confidential) {
+            <div class="modal__nda" role="note">
+              <span aria-hidden="true">🔒</span>
+              Proyecto sujeto a acuerdo de confidencialidad — no puedo compartir capturas ni URL. Puedo comentar decisiones técnicas en entrevista.
+            </div>
+          }
+
+          @if (project.liveUrl || project.githubUrl) {
+            <div class="modal__links">
+              @if (project.liveUrl) {
+                <a [href]="project.liveUrl" target="_blank" rel="noopener noreferrer" class="modal__link modal__link--live">
+                  🌐 Ver en vivo
+                </a>
+              }
+              @if (project.githubUrl) {
+                <a [href]="project.githubUrl" target="_blank" rel="noopener noreferrer" class="modal__link modal__link--github">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.03 11.03 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.8 1.19 1.82 1.19 3.08 0 4.41-2.69 5.38-5.25 5.66.41.35.78 1.05.78 2.11v3.12c0 .31.21.68.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+                  </svg>
+                  GitHub
+                </a>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>
