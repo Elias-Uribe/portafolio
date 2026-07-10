@@ -44,8 +44,8 @@ export const PORTFOLIO_CONFIG = {
   },
 
   cv: {
-    es: '/files/cv-elias-uribe.pdf',
-    // en: '/files/cv-elias-uribe-en.pdf', // pendiente
+    es: 'files/cv-elias-uribe.pdf',
+    // en: 'files/cv-elias-uribe-en.pdf', // pendiente
   },
 
   web3forms: {

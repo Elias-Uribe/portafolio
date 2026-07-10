@@ -24,8 +24,8 @@ interface NavItem {
         <a class="header__logo" href="#hero" (click)="scrollTo('hero', $event)">
           <img
             class="header__logo-mark"
-            src="/images/logo-96.png"
-            srcset="/images/logo-96.png 1x, /images/logo-192.png 2x"
+            src="images/logo-96.png"
+            srcset="images/logo-96.png 1x, images/logo-192.png 2x"
             width="44"
             height="44"
             alt=""
