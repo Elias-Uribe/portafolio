@@ -21,6 +21,14 @@
   --font-family-display: 'Cinzel', 'Palatino Linotype', serif;
   --font-family-body:    'Rajdhani', 'Source Sans Pro', sans-serif;
   --font-family-mono:    'JetBrains Mono', 'Fira Code', monospace;
+  --font-family-rune:    'Segoe UI Historic', 'Segoe UI Symbol', 'Noto Sans Runic', 'Apple Symbols', 'Cinzel', serif;
+
+  /* Paleta Dawnguard (vampire mode) — se activa vía [data-theme='dawnguard'] */
+  --dg-frost:      #f0abfc;
+  --dg-frost-glow: #c084fc;
+  --dg-frost-deep: #a855f7;
+  --dg-gold:       #ef4444;
+  --dg-gold-dim:   #b91c1c;
 }
 
 /* ─── Skyrim Design System ─────────────────────────────────────────── */
@@ -51,11 +59,11 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Selección = tinta dorada sobre pergamino */
+  /* Selección — polvo de estrellas dorado sobre negro (mantiene contraste dark) */
   ::selection {
-    background: rgba(217, 119, 6, 0.85);
-    color: #1a1208;
-    text-shadow: 0 0 6px rgba(251, 191, 36, 0.5);
+    background: rgba(251, 191, 36, 0.35);
+    color: #fef3c7;
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
   }
 
   /* Scrollbar temática — cadena de eslabones dorados */
@@ -87,9 +95,12 @@
   h1, h2, h3, h4, h5 {
     font-family: 'Cinzel', 'Palatino Linotype', serif;
     font-weight: 600;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     line-height: 1.2;
+    /* Tinta grabada — pequeña sombra oscura debajo simula grabado en piedra/pergamino */
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.35);
   }
+  h1 { letter-spacing: 0.03em; }
 
   img, video { max-width: 100%; height: auto; display: block; }
   a { color: inherit; text-decoration: none; }
@@ -107,6 +118,11 @@
   .font-display { font-family: 'Cinzel', serif; letter-spacing: 0.08em; }
   .font-body    { font-family: 'Rajdhani', sans-serif; }
   .font-mono    { font-family: 'JetBrains Mono', monospace; }
+  /* Runa: stack tipográfico que garantiza glifos Elder Futhark reales */
+  .font-rune, .rune {
+    font-family: var(--font-family-rune);
+    font-feature-settings: 'liga' 0, 'clig' 0;
+  }
 
   .glow-frost { box-shadow: var(--glow-frost); }
   .glow-gold  { box-shadow: var(--glow-gold); }
@@ -117,6 +133,36 @@
   }
   .text-glow-gold {
     text-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.4);
+  }
+
+  /* ── Textura de pergamino envejecido ────────────────────────────────
+     Overlay SVG de ruido fractal (fractalNoise). Aplicar a cualquier
+     tarjeta/modal con `position: relative` para dar sensación de papel. */
+  .tex-parchment { position: relative; }
+  .tex-parchment::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.98  0 0 0 0 0.78  0 0 0 0 0.28  0 0 0 0.55 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+    background-size: 240px 240px;
+    mix-blend-mode: overlay;
+    opacity: 0.09;
+  }
+
+  /* ── Textura piedra/runa: más oscura, para bloques rúnicos ────────── */
+  .tex-stone { position: relative; }
+  .tex-stone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/></filter><rect width='300' height='300' filter='url(%23n)' opacity='0.5'/></svg>");
+    background-size: 300px 300px;
+    mix-blend-mode: soft-light;
+    opacity: 0.35;
   }
 
   .bg-glass {
@@ -226,6 +272,81 @@
   100% { transform: translateY(100vh); }
 }
 
+/* ─── Skyrim tooltip ─────────────────────────────────────────────────
+   Uso: <element data-tip="Texto"> — muestra recuadro negro con borde
+   dorado y texto Cinzel al hover. Estable, sin JS. */
+[data-tip] { position: relative; }
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 0.9rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fef3c7;
+  background: rgba(6, 12, 20, 0.96);
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 999;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 12px rgba(251, 191, 36, 0.2);
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  animation: tipFade 200ms ease-out;
+}
+[data-tip]:hover::before,
+[data-tip]:focus-visible::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(6, 12, 20, 0.96);
+  border-right: 1px solid rgba(251, 191, 36, 0.55);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.55);
+  pointer-events: none;
+  z-index: 999;
+}
+@keyframes tipFade {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-tip]:hover::after,
+  [data-tip]:focus-visible::after { animation: none; }
+}
+
+/* ─── Level-up burst grande (para el pulso al scroll de sección) ───── */
+.fx-levelup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(254, 243, 199, 0.95) 0%, rgba(251, 191, 36, 0.6) 40%, rgba(251, 191, 36, 0) 75%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 90;
+  animation: fxLevelUp 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  filter: blur(2px);
+}
+@keyframes fxLevelUp {
+  0%   { opacity: 0;   transform: translate(-50%, -50%) scale(0.6); }
+  25%  { opacity: 1;   transform: translate(-50%, -50%) scale(6); }
+  100% { opacity: 0;   transform: translate(-50%, -50%) scale(28); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-levelup { display: none; }
+}
+
 /* ─── Reduced motion respect ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -243,4 +364,39 @@
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
   }
+}
+
+/* ─── Dawnguard (vampire mode) ────────────────────────────────────────
+   Se activa poniendo `data-theme="dawnguard"` en <html>. Invierte la
+   paleta a rojo-violeta oscuro por 30s. */
+:root[data-theme='dawnguard'] {
+  --color-frost:      #f0abfc;
+  --color-frost-glow: #c084fc;
+  --color-frost-deep: #a855f7;
+  --color-rune:       #fbcfe8;
+  --color-ice:        #fce7f3;
+  --color-gold:       #f87171;
+  --color-gold-dim:   #b91c1c;
+}
+:root[data-theme='dawnguard'] body {
+  background-color: #0b040a;
+}
+:root[data-theme='dawnguard'] {
+  filter: hue-rotate(60deg) saturate(1.1);
+}
+/* Los orbes y snowfall usan color literal; mejor un overlay global */
+html[data-theme='dawnguard']::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(239, 68, 68, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(168, 85, 247, 0.10) 0%, transparent 60%);
+  animation: dawnguardPulse 4s ease-in-out infinite;
+}
+@keyframes dawnguardPulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1;   }
 }

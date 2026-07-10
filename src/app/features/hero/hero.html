@@ -2,7 +2,8 @@
   <app-aurora />
   <app-particle-bg />
 
-  <div class="hero__rune-bg" aria-hidden="true">ᛟ</div>
+  <div class="hero__fog" aria-hidden="true"></div>
+  <div class="hero__rune-bg font-rune" aria-hidden="true">ᛟ</div>
 
   <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
   <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
@@ -13,9 +14,9 @@
   <div class="hero__content">
 
     <div class="hero__eyebrow">
-      <span class="hero__rune-badge" aria-hidden="true">ᚠ ᚢ ᚦ ᚨ ᚱ</span>
+      <span class="hero__rune-badge font-rune" aria-hidden="true">ᚠ ᚢ ᚦ ᚨ ᚱ</span>
       <span class="hero__eyebrow-text">{{ config.identity.role }} · Argentina</span>
-      <span class="hero__rune-badge" aria-hidden="true">ᚠ ᚢ ᚦ ᚨ ᚱ</span>
+      <span class="hero__rune-badge font-rune" aria-hidden="true">ᚠ ᚢ ᚦ ᚨ ᚱ</span>
     </div>
 
     <div class="hero__availability" role="status" aria-live="polite">
@@ -91,16 +92,26 @@
       </a>
     </div>
 
-    <a class="hero__cv-download" [href]="cvHref" download aria-label="Descargar CV de Elias Uribe">
+    <a class="hero__cv-download" [href]="cvHref" download data-fx="burst" aria-label="Descargar CV de Elias Uribe">
       <div class="hero__cv-download__icon-wrap" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
+        <!-- Pergamino enrollado con lazo -->
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Rollo superior -->
+          <path d="M6 7h20"/>
+          <ellipse cx="6" cy="7" rx="2" ry="1.8" fill="currentColor" opacity="0.25"/>
+          <ellipse cx="26" cy="7" rx="2" ry="1.8" fill="currentColor" opacity="0.25"/>
+          <!-- Cuerpo del pergamino -->
+          <path d="M8 7v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"/>
+          <!-- Líneas de texto -->
+          <line x1="12" y1="12" x2="20" y2="12" opacity="0.65"/>
+          <line x1="12" y1="16" x2="20" y2="16" opacity="0.65"/>
+          <line x1="12" y1="20" x2="17" y2="20" opacity="0.65"/>
+          <!-- Sello / cinta -->
+          <circle cx="16" cy="26" r="1.8" fill="currentColor" opacity="0.55"/>
         </svg>
       </div>
       <div class="hero__cv-download__text">
-        <span class="hero__cv-download__label">ᚠ Pergamino del Aventurero ᚠ</span>
+        <span class="hero__cv-download__label"><span class="font-rune">ᚠ</span> Pergamino del Aventurero <span class="font-rune">ᚠ</span></span>
         <span class="hero__cv-download__sub">Descargar Curriculum Vitae</span>
       </div>
       <div class="hero__cv-download__shimmer" aria-hidden="true"></div>
