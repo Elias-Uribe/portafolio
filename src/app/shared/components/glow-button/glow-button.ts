@@ -38,6 +38,11 @@ import { Component, input, output } from '@angular/core';
       overflow: hidden;
       transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
       clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      max-width: 100%;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .glow-btn { padding: 0.7rem 1.25rem; font-size: 0.78rem; letter-spacing: 0.12em; }
     }
 
     .glow-btn::before {

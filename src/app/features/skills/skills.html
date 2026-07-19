@@ -25,6 +25,35 @@
       }
     </div>
 
+    <!-- MOBILE: Grid de chips agrupados por cluster (legible) -->
+    <div
+      class="skills__mobile"
+      role="tabpanel"
+      [attr.aria-label]="'Habilidades — ' + activeCategory()"
+    >
+      @for (cluster of clusters(); track cluster.id) {
+        @if (isClusterActive(cluster.id)) {
+          <div class="skill-cluster">
+            <div class="skill-cluster__header">
+              <span class="skill-cluster__rune font-rune" aria-hidden="true">{{ cluster.rune }}</span>
+              <h3 class="skill-cluster__label">{{ cluster.label }}</h3>
+            </div>
+            <div class="skill-cluster__chips">
+              @for (star of cluster.stars; track star.skill.name) {
+                <span
+                  class="skill-chip"
+                  [attr.data-tip]="star.skill.yearsUsed ? yearsLabel(star.skill.yearsUsed) : null"
+                >
+                  <span class="skill-chip__dot" [style.--dot-size]="star.size + 'px'" aria-hidden="true"></span>
+                  {{ star.skill.name }}
+                </span>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+
     <div
       id="constellation-panel"
       class="constellation"

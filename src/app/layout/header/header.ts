@@ -309,11 +309,32 @@ interface NavItem {
     }
     .header__mobile-link:hover { color: #7dd3fc; }
 
+    .header__mobile-toggle-theme {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      background: none;
+      color: #fbbf24;
+      text-transform: none;
+      font-family: 'Cinzel', serif;
+    }
+
     @media (max-width: 768px) {
       .header__nav { display: none; }
-      .header__mobile-toggle { display: flex; }
-      .header { padding: 1rem 1.25rem; }
-      .header--scrolled { padding: 0.75rem 1.25rem; }
+      .header__mobile-toggle { display: flex; margin-left: auto; }
+      .header { padding: 0.85rem 1rem; }
+      .header--scrolled { padding: 0.65rem 1rem; }
+      .header__inner { gap: 0.75rem; }
+      .header__logo-name { font-size: 0.9rem; }
+      .header__logo-title { font-size: 0.62rem; letter-spacing: 0.12em; }
+      .header__logo-mark { width: 38px; height: 38px; }
+      .header--scrolled .header__logo-mark { width: 34px; height: 34px; }
+    }
+
+    @media (max-width: 380px) {
+      .header__logo-text { display: none; }
+      .header { padding: 0.7rem 0.85rem; }
     }
   `],
 })

@@ -102,9 +102,13 @@ import { Component } from '@angular/core';
       .aurora__band { opacity: 0.35; }
     }
 
-    /* Mobile: menos blur para performance */
+    /* Mobile: menos blur para performance y menos intensidad para no competir con el texto */
+    @media (max-width: 768px) {
+      .aurora__band { filter: blur(45px); opacity: 0.25; }
+      .aurora__stars { opacity: 0.35; background-size: 300px 220px; }
+    }
     @media (max-width: 640px) {
-      .aurora__band { filter: blur(40px); opacity: 0.4; }
+      .aurora__band { filter: blur(35px); opacity: 0.22; }
     }
   `],
 })

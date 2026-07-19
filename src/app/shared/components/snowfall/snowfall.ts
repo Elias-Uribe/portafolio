@@ -100,8 +100,12 @@ export class SnowfallComponent implements OnInit, OnDestroy {
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
+  private isMobile(): boolean {
+    return window.innerWidth < 768;
+  }
+
   private currentCount(): number {
-    return window.innerWidth < 768 ? 40 : 90;
+    return this.isMobile() ? 22 : 90;
   }
 
   private initFlakes(): void {
@@ -109,25 +113,49 @@ export class SnowfallComponent implements OnInit, OnDestroy {
   }
 
   private makeFlake(startAnywhere = false): Flake {
-    const layer = (Math.floor(Math.random() * 3) as 0 | 1 | 2);
+    const mobile = this.isMobile();
+    /* En mobile: nunca capa 2 (los copos grandes con 6 rayos se ven como
+       estrellas de destello agresivas detrás del contenido). Solo 0 y 1. */
+    const layer = mobile
+      ? (Math.random() < 0.7 ? 0 : 1) as 0 | 1
+      : (Math.floor(Math.random() * 3) as 0 | 1 | 2);
+    const sizeMult = mobile ? 0.7 : 1;
+    const opacityMult = mobile ? 0.55 : 1;
     return {
       x: Math.random() * window.innerWidth,
       y: startAnywhere ? Math.random() * window.innerHeight : -10,
-      size: layer === 2 ? 2.6 + Math.random() * 1.2 : layer === 1 ? 1.6 + Math.random() * 0.8 : 0.8 + Math.random() * 0.6,
+      size:
+        (layer === 2 ? 2.6 + Math.random() * 1.2
+         : layer === 1 ? 1.4 + Math.random() * 0.6
+         : 0.7 + Math.random() * 0.5) * sizeMult,
       speedY: layer === 2 ? 0.9 + Math.random() * 0.5 : layer === 1 ? 0.5 + Math.random() * 0.3 : 0.25 + Math.random() * 0.15,
       drift: (Math.random() - 0.5) * 0.6,
       driftPhase: Math.random() * Math.PI * 2,
-      opacity: layer === 2 ? 0.85 : layer === 1 ? 0.6 : 0.35,
+      opacity:
+        (layer === 2 ? 0.75
+         : layer === 1 ? 0.5
+         : 0.3) * opacityMult,
       layer,
     };
   }
 
   private drawFlake(f: Flake): void {
-    // Copo simplificado con 6 puntas trazadas
     const cx = f.x;
     const cy = f.y - this.scrollY * (0.03 + f.layer * 0.05);
     const s = f.size;
+    const mobile = this.isMobile();
 
+    /* En mobile todos los copos son puntitos sólidos (evita las 6 líneas
+       radiales que se leen como rayos/destellos detrás del texto). */
+    if (mobile) {
+      this.ctx.fillStyle = `rgba(224, 242, 254, ${f.opacity})`;
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy, s * 0.6, 0, Math.PI * 2);
+      this.ctx.fill();
+      return;
+    }
+
+    // Desktop: copo con 6 puntas radiales (efecto detalle)
     this.ctx.strokeStyle = `rgba(224, 242, 254, ${f.opacity})`;
     this.ctx.lineWidth = f.layer === 2 ? 1 : 0.7;
     this.ctx.lineCap = 'round';

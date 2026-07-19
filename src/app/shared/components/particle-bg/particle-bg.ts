@@ -109,8 +109,12 @@ export class ParticleBgComponent implements OnInit, OnDestroy {
     }
   }
 
+  private isMobile(): boolean {
+    return window.innerWidth < 768;
+  }
+
   private currentParticleCount(): number {
-    return window.innerWidth < 768 ? 25 : 55;
+    return this.isMobile() ? 14 : 55;
   }
 
   private resize(): void {
@@ -136,10 +140,12 @@ export class ParticleBgComponent implements OnInit, OnDestroy {
     const maxLife = 120 + Math.random() * 180;
     const width = this.canvas.width / (window.devicePixelRatio || 1);
     const height = this.canvas.height / (window.devicePixelRatio || 1);
+    const mobile = this.isMobile();
     return {
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 2.5 + 0.5,
+      /* En mobile: partículas más pequeñas para que no compitan con el texto */
+      size: mobile ? Math.random() * 1.1 + 0.4 : Math.random() * 2.5 + 0.5,
       speedX: (Math.random() - 0.5) * 0.4,
       speedY: -Math.random() * 0.6 - 0.2,
       opacity: 0,
@@ -178,11 +184,13 @@ export class ParticleBgComponent implements OnInit, OnDestroy {
 
       this.ctx.beginPath();
       this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      this.ctx.fillStyle = `${p.color}${p.opacity * 0.7})`;
+      /* En mobile bajamos la opacidad final para que no compitan con el hero */
+      const mobileFade = this.isMobile() ? 0.45 : 0.7;
+      this.ctx.fillStyle = `${p.color}${p.opacity * mobileFade})`;
       this.ctx.fill();
 
-      // Sombras solo cada 3 frames y en partículas grandes (perf en mobile)
-      if (p.size > 1.5 && this.frameCount % 3 === 0) {
+      /* Sombras/halo solo en desktop — en mobile crea streaks feos */
+      if (!this.isMobile() && p.size > 1.5 && this.frameCount % 3 === 0) {
         this.ctx.shadowBlur = 8;
         this.ctx.shadowColor = `${p.color}0.5)`;
         this.ctx.fill();

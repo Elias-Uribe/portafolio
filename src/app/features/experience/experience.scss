@@ -2,6 +2,7 @@
   position: relative;
   padding: clamp(4rem, 10vw, 8rem) 2rem;
   background: linear-gradient(180deg, #020408 0%, #0a1628 50%, #020408 100%);
+  overflow: hidden;
 }
 
 .experience__inner {
@@ -271,14 +272,33 @@
 }
 
 @media (max-width: 768px) {
-  .exp-card__header { flex-direction: column; }
+  .experience { padding: clamp(3rem, 8vw, 6rem) 1.25rem; }
+  .exp-card { padding: 1.5rem 1.25rem; gap: 1rem; }
+  .exp-card__header { flex-direction: column; gap: 0.5rem; }
   .exp-card__meta   { align-items: flex-start; }
+  .exp-card__role   { font-size: 1.05rem; }
+  .exp-card__company { font-size: 0.8rem; }
+  .exp-card__desc   { font-size: 0.88rem; }
+  .exp-card__achievement { font-size: 0.85rem; }
   .experience__edu-divider { display: none; }
-  .experience__edu-card { flex-direction: column; align-items: flex-start; }
+  .experience__edu-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .exp-card { flex-direction: column; gap: 1rem; }
+  .experience { padding: 2.5rem 1rem; }
+  .exp-card { flex-direction: column; gap: 1rem; padding: 1.25rem 1rem; }
   .exp-card__accent { flex-direction: row; }
   .exp-card__accent-line { min-height: 0; min-width: 2rem; height: 1px; width: auto; }
+  .exp-card__accent-rune { writing-mode: horizontal-tb; }
+  .exp-card__role  { font-size: 1rem; }
+  .exp-card__desc  { font-size: 0.85rem; line-height: 1.6; }
+  .exp-card__tech-tag { font-size: 0.6rem; padding: 0.15rem 0.5rem; }
+  .experience__edu-slot { min-width: 0; }
+  .experience__edu-title { font-size: 0.9rem; }
+  .experience__edu-inst  { font-size: 0.8rem; }
 }

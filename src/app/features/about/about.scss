@@ -252,6 +252,34 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .about__codex { grid-template-columns: 1fr; }
+  .about__codex { grid-template-columns: 1fr; gap: 2rem; }
+  .about__attributes { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .about { padding: clamp(3rem, 8vw, 6rem) 1.25rem; }
+  .about__lore-card { padding: 1.5rem 1.25rem; }
+  .about__lore-mark { width: 56px; height: 56px; }
+  .about__lore-name { font-size: 1rem; }
+  .about__lore-class { font-size: 0.7rem; letter-spacing: 0.1em; }
+  .about__lore-body p { font-size: 0.9rem; }
+  .about__timeline-heading { font-size: 0.9rem; }
+  .about__timeline-desc { font-size: 0.85rem; }
+  .about::before { font-size: 24rem; }
+}
+
+@media (max-width: 640px) {
   .about__attributes { grid-template-columns: 1fr; }
+  .about__attr-value { font-size: 0.8rem; }
+  .about__attr-name  { font-size: 0.6rem; }
+  .about__lore-body p { font-size: 0.88rem; line-height: 1.6; }
+  .drop-cap::first-letter { font-size: 2.8em; padding: 0.1rem 0.4rem 0 0; }
+}
+
+@media (max-width: 380px) {
+  .about { padding: 2.5rem 1rem; }
+  .about__lore-card { padding: 1.25rem 1rem; }
+  .about__lore-header { gap: 0.6rem; }
+  .about__lore-mark { width: 48px; height: 48px; }
+  .about::before { font-size: 20rem; }
 }

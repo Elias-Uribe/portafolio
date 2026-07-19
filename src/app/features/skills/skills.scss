@@ -69,6 +69,81 @@
 .skills__tab--active .skills__tab-rune,
 .skills__tab:hover .skills__tab-rune { opacity: 1; }
 
+/* ── Mobile layout: chips agrupados por cluster ── */
+.skills__mobile { display: none; }
+
+.skill-cluster {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.1rem 1.1rem;
+  background:
+    linear-gradient(180deg, rgba(30, 20, 8, 0.25) 0%, rgba(6, 12, 20, 0.75) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.18);
+  clip-path: polygon(12px 0%, 100% 0%, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+
+.skill-cluster__header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed rgba(251, 191, 36, 0.25);
+}
+
+.skill-cluster__rune {
+  font-size: 1.35rem;
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+  line-height: 1;
+}
+
+.skill-cluster__label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fbbf24;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.skill-cluster__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  background: rgba(125, 211, 252, 0.06);
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  letter-spacing: 0.02em;
+  transition: color 200ms, background 200ms, border-color 200ms;
+  position: relative;
+
+  &:active, &:hover {
+    color: #fef3c7;
+    background: rgba(251, 191, 36, 0.08);
+    border-color: rgba(251, 191, 36, 0.45);
+  }
+}
+
+.skill-chip__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #e0f2fe 0%, #7dd3fc 60%, transparent 100%);
+  box-shadow: 0 0 6px rgba(125, 211, 252, 0.55);
+  flex-shrink: 0;
+}
+
 /* ── Constellation ── */
 .constellation {
   position: relative;
@@ -277,11 +352,20 @@
   }
 }
 
-/* Mobile: constelación colapsa a scroll horizontal si es muy chica */
-@media (max-width: 640px) {
-  .constellation { min-height: 400px; }
-  .star__name { font-size: 9px; }
-  .cluster__label { font-size: 11px; }
+/* Mobile: la constelación es inservible por tamaño; cambiamos a chips agrupados */
+@media (max-width: 768px) {
+  .skills { padding: clamp(3rem, 8vw, 6rem) 1.25rem; }
+  .constellation { display: none; }
+  .skills__mobile { display: block; }
+  .skills__tabs { gap: 0.4rem; margin-bottom: 1.5rem; }
+  .skills__tab { padding: 0.4rem 0.75rem; font-size: 0.72rem; letter-spacing: 0.06em; }
+}
+
+@media (max-width: 380px) {
+  .skills { padding: 2.5rem 1rem; }
+  .skill-cluster { padding: 0.85rem 0.9rem; }
+  .skill-chip { font-size: 0.75rem; padding: 0.3rem 0.55rem; }
+  .skills__tab { padding: 0.35rem 0.65rem; font-size: 0.68rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

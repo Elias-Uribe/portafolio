@@ -111,6 +111,22 @@ import { PORTFOLIO_CONFIG } from '../../core/config/portfolio.config';
       letter-spacing: 0.05em;
     }
     .footer__copy-rune { color: rgba(125, 211, 252, 0.3); margin: 0 0.5rem; }
+
+    @media (max-width: 640px) {
+      .footer { padding: 2rem 1.25rem 1.5rem; }
+      .footer__rune-row {
+        gap: 0.9rem;
+        font-size: 1rem;
+        letter-spacing: 0.15rem;
+        flex-wrap: wrap;
+      }
+      .footer__rune-row span:nth-child(n+8) { display: none; }
+      .footer__name { font-size: 0.95rem; }
+      .footer__subtitle { font-size: 0.72rem; letter-spacing: 0.1em; }
+      .footer__links { gap: 0.5rem 0.6rem; }
+      .footer__link { font-size: 0.8rem; }
+      .footer__copy { font-size: 0.72rem; }
+    }
   `],
 })
 export class FooterComponent {
